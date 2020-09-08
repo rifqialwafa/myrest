@@ -1,0 +1,9 @@
+untuk user akun
+
+admin:
+  email = admin@admin.com
+  pass  = 123
+
+user:
+  email = test@test.com
+  pass  = test

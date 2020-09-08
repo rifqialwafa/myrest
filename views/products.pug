@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        link(href='./img/logo.png', rel='icon')
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Admin Page
+        link(href='./style/bootstrap.min.css', rel='stylesheet')
+        link(href='./js/dataTables.bootstrap4.min.css', rel='stylesheet')
+    body
+      nav.navbar.navbar-expand-md.navbar-dark.bg-dark.sticky-top
+        a.navbar-brand(href='/') MY - 
+          b REST 
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navmakeme', aria-controls='basicExampleNav', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse.justify-content-center#navmakeme
+          .navbar-nav
+            a.nav-item.nav-link(href='/admin') Home
+            a.nav-item.nav-link(href='/profile') Profile
+            a.nav-item.nav-link.active(href='/products') Products
+        a(href="/logout").btn.btn-dark.float-right Logout
+        
+      div.container.pt-5
+        h2 Data Product Resto
+        if message.msg_e
+          .alert.alert-danger.alert-dismissible.fade.show(role='alert', data-dismiss="alert")#success-alert
+            strong #{message.msg_e}
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+              span(aria-hidden='true') ×
+        else if message.msg_s
+          .alert.alert-success.alert-dismissible.fade.show(role='alert', data-dismiss="alert")
+            strong #{message.msg_s}
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+              span(aria-hidden='true') ×
+        table.table.table-striped.table-dark.mt-3.mb-3#datatable
+          thead
+            tr
+              th(scope="col") #
+              th(scope="col") Photo
+              th(scope="col") Name
+              th(scope="col") Type
+              th(scope="col") Price
+              th(scope="col", width="200") 
+                button.btn.btn-outline-primary.btn-rounded.btn-sm(type='button', data-toggle='modal', data-target=`#adddata`) Add Product
+          tbody
+            for product in productss
+              tr
+                th(scope="row")= product.no
+                th(scope="row")
+                  img(src=`./images/photo_products/${product.photo}` width='100px')
+                th(scope="row")= product.name
+                th(scope="row")= product.type
+                th(scope="row")= product.price
+                th(scope="row") 
+                  button.btn.btn-outline-warning.btn-rounded.mr-1(type='button', data-toggle='modal', data-target=`#modaledit-${product.id_product}`) Edit
+                  button.btn.btn-outline-danger.btn-rounded(type='button', data-toggle='modal', data-target=`#modaldelete-${product.id_product}`) Delete
+        
+          .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalScrollableTitle', aria-hidden='true' id=`adddata`)
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5.modal-title Add Products
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      span(aria-hidden='true') ×
+                  .modal-body
+                    form(action="/products", method="post", id='addUser', autocomplete="off", enctype='multipart/form-data')
+                      .card-body
+                        .form-group
+                          label(for="inputName") Name
+                          input(type="text", name="name" placeholder="Name" required autofocus).form-control#inputName
+                        .form-group
+                          label(for="inputDesc") Description 
+                          textarea(name='desc', rows='5', placeholder='Description of products', required).form-control#inputDesc
+                        .form-group
+                          label(for="inputIng") Ingredients 
+                          input(type="text", name="ingredients" placeholder="Ingredients" required).form-control#inputIng
+                        .form-group
+                          label(for="inputPrice") Price 
+                          input(type="number", name="price" placeholder="Price" required).form-control#inputPrice
+                        .form-group
+                          label(for="inputType") Type 
+                          select(name="type").form-control
+                            option(value="Foods") Foods
+                            option(value="Drinks") Drinks
+                        .form-group
+                          label Upload photo of Products !
+                          input.form-control(type='file', name='photo', required)#photo
+                  .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    input.btn.btn-dark(type="submit" form=`addUser` value="Add")
+          each product in productss
+            form(action='/delProducts', method='post')
+              .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' id=`modaldelete-${product.id_product}`)
+                .modal-dialog(role='document')
+                  .modal-content
+                    .modal-header
+                      h5.modal-title#exampleModalLabel Delete Products
+                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    .modal-body
+                        label Name : 
+                          label= product.name
+                        br
+                        label Description : 
+                          label= product.desc
+                        input(type='hidden' name='id_product' value=`${product.id_product}`)
+                        input(type='hidden' name='photo_product' value=`${product.photo}`)
+                    .modal-footer
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      input(type='submit' value='Delete').btn.btn-dark 
+            .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' id=`modaledit-${product.id_product}`)
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5.modal-title Edit Products
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      span(aria-hidden='true') ×
+                  .modal-body
+                    form(action="/updateProduct", method="post", id=`formedit-${product.id_product}` autocomplete="off" enctype='multipart/form-data')
+                      .card-body
+                      .form-group
+                        label(for="inputName") Name
+                        input(type="text", name="name" placeholder="Name" value=`${product.name}` required autofocus).form-control#inputName
+                      .form-group
+                        label(for="inputDesc") Description 
+                        input(type="text", name="desc" placeholder="Description of products" value=`${product.desc}` required).form-control#inputDesc
+                      .form-group
+                        label(for="inputIng") Ingredients 
+                        input(type="text", name="ingredients" placeholder="Ingredients" value=`${product.ingredients}` required).form-control#inputIng
+                      .form-group
+                        label(for="inputPrice") Price 
+                        input(type="number", name="price" placeholder="Price" value=`${product.price}` required).form-control#inputPrice
+                      .form-group
+                        label(for="inputType") Type 
+                        select(name="type").form-control
+                          if (product.type == 'Foods')
+                            option(value="Foods" selected) Foods
+                            option(value="Drinks") Drinks
+                          else
+                            option(value="Foods") Foods
+                            option(value="Drinks" selected) Drinks
+                      .form-group
+                        label Update photo of Products (Optional)
+                        input.form-control(type='file', name='photo')#photo
+                        
+                      input(type="hidden", name="id_product" value=`${product.id_product}` )
+                      input(type="hidden", name="photo_lama" value=`${product.photo}` )
+                          
+                  .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    input.btn.btn-dark(type="submit" form=`formedit-${product.id_product}` value="Update")
+   
+      script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')
+      script(src='js/jquery.min.js')
+      script(src='js/jquery.dataTables.min.js')
+      script(src='js/dataTables.bootstrap4.min.js')
+      script.
+        $(document).ready(function(){
+            $('#datatable').DataTable();
+          })

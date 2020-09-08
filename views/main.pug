@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+      link(href='./img/logo.png', rel='icon')
+      meta(charset='utf-8')
+      meta(content='width=device-width,initial-scale=1', name='viewport')
+      title MY REST
+      meta(content, name='descriptison')
+      meta(content, name='keywords')
+      link(href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i', rel='stylesheet')
+      
+      link(href='./vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+      link(href='./vendor/icofont/icofont.min.css', rel='stylesheet')
+      link(href='./vendor/boxicons/css/boxicons.min.css', rel='stylesheet')
+      link(href='./vendor/animate.css/animate.min.css', rel='stylesheet')
+      link(href='./vendor/owl.carousel/assets/owl.carousel.min.css', rel='stylesheet')
+      link(href='./vendor/venobox/venobox.css', rel='stylesheet')
+      link(href='./vendor/aos/aos.css', rel='stylesheet')
+      
+      link(href='./css/style.css', rel='stylesheet')
+    body
+      #topbar.d-flex.align-items-center.fixed-top
+        .container.d-flex
+          .contact-info.mr-auto
+            i.icofont-phone
+            |  +62 895-3215-89123
+            span.d-none.d-lg-inline-block
+              i.icofont-clock-time.icofont-rotate-180
+              |  Mon-Sat: 11:00 AM - 23:00 PM
+              
+      header#header.fixed-top
+        .container.d-flex.align-items-center
+          h1.logo.mr-auto
+            a.logo.mr-auto(href='/')
+            img.img-fluid(src='./img/logo.png', alt)
+            a(href='/').pl-2 MY -REST
+              
+          nav.nav-menu.d-none.d-lg-block
+            ul
+              li.active
+                a(href='/') Home
+              li
+                a(href='#gallery') Gallery
+              li
+                a(href='#menu') Menu
+              li
+                a(href='#specials') Specials
+              li
+                a(href='#contact') Contact
+              if (auth.yesOrno)
+                li
+                  a(href='/logout') Logout
+              li.book-a-table.text-center
+                a(href='#book-a-table') Book a table
+      
+      section#hero.d-flex.align-items-center
+        .container.position-relative.text-center.text-lg-left(data-aos='zoom-in', data-aos-delay='100')
+          .row
+            .col-lg-8
+              h2= `Hello, ${auth.name}!`
+              h1
+                | Welcome to 
+                br
+                span MY - Restaurant
+              .btns
+                a.btn-menu.animated.fadeInUp.scrollto(href='#menu') Our Menu
+                a.btn-book.animated.fadeInUp.scrollto(href='#book-a-table') Book a Table
+            .col-lg-4.d-flex.align-items-center.justify-content-center
+              if (auth.yesOrno == false)
+                a.play-btn(href='/login')
+      main#main
+        section#gallery.gallery
+          .container(data-aos='fade-up')
+            .section-title
+              h2 Gallery
+              p Some photos from Our Restaurant
+          .container-fluid(data-aos='fade-up', data-aos-delay='100')
+            .row.no-gutters
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-1.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-1.jpg', alt)
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-2.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-2.jpg', alt)
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-3.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-3.jpg', alt)
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-4.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-4.jpg', alt)
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-5.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-5.jpg', alt)
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-6.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-6.jpg', alt)
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-7.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-7.jpg', alt)
+              .col-lg-3.col-md-4
+                .gallery-item
+                  a.venobox(href='./img/gallery/gallery-8.jpg', data-gall='gallery-item')
+                    img.img-fluid(src='./img/gallery/gallery-8.jpg', alt)
+              
+                    
+        section#book-a-table.book-a-table
+          .container(data-aos='fade-up')
+            .section-title
+              h2 Reservation
+              p Book a Table
+            form(action='#', method="post" data-aos="fade-up" data-aos-delay="100").php-email-form
+              .form-row
+                .col-lg-4.col-md-6.form-group
+                  input.form-control#name(type='text', name='name', placeholder='Your Name', data-rule='minlen:4', data-msg='Please enter at least 4 chars')
+                  .validate
+                .col-lg-4.col-md-6.form-group
+                  input.form-control#email(type='email', name='email', placeholder='Your Email', data-rule='email', data-msg='Please enter a valid email')
+                  .validate
+                .col-lg-4.col-md-6.form-group
+                  input.form-control#phone(type='text', name='phone', placeholder='Your Phone', data-rule='minlen:4', data-msg='Please enter at least 4 chars')
+                  .validate
+                .col-lg-4.col-md-6.form-group
+                  input.form-control#date(type='text', name='date', placeholder='Date', data-rule='minlen:4', data-msg='Please enter at least 4 chars')
+                  .validate
+                .col-lg-4.col-md-6.form-group
+                  input.form-control#time(type='text', name='time', placeholder='Time', data-rule='minlen:4', data-msg='Please enter at least 4 chars')
+                  .validate
+                .col-lg-4.col-md-6.form-group
+                  input.form-control#people(type='number', name='people', placeholder='# of people', data-rule='minlen:1', data-msg='Please enter at least 1 chars')
+                  .validate
+              .form-group
+                textarea.form-control(name='message', rows='5', placeholder='Message')
+                .validate
+              .text-center
+                if (auth.yesOrno)
+                  button(type='submit') Book a Table
+                else
+                  a(href='/login').redirLogin Book a Table
+                  
+                  
+        section#specials.events
+          .container(data-aos='fade-up')
+            .section-title
+              h2 Specials
+              p Check Our Specials
+            .owl-carousel.events-carousel(data-aos='fade-up', data-aos-delay='100')
+              for special in specialss
+                .row.event-item
+                  .col-lg-6
+                    img.img-fluid(src=`./images/photo_products/${special.photo}`, alt)
+                  .col-lg-6.pt-4.pt-lg-0.content
+                    h3= special.name
+                    .price
+                      p
+                        span= `Rp.${special.price}`
+                    p.font-italic= special.desc
+                    ul
+                      li  
+                        i.icofont-check-circled= ` ${special.promo}`
+                    p= special.ingredients
+                    
+                        
+        section#menu.menu.section-bg
+          .container(data-aos='fade-up')
+            .section-title
+              h2 Menu
+              p Check Our Tasty Menu
+            
+            .row.menu-container(data-aos='fade-up', data-aos-delay='200')
+              for product in productss
+                .col-lg-6.menu-item.filter-starters
+                  img.menu-img(src=`./images/photo_products/${product.photo}`, alt)
+                  .menu-content
+                    a(href='#')= product.name
+                    span= `Rp. ${product.price}`
+                  .menu-ingredients= product.ingredients
+                  
+                  
+        section#contact.contact
+          .container(data-aos='fade-up')
+            .section-title
+              h2 Contact
+              p Contact Us
+          .container(data-aos='fade-up')
+            .row.mt-5
+              .col-lg-4
+                .info
+                  .address
+                    i.icofont-google-map
+                    h4 Location:
+                    p Bogor, Indonesia
+                  .open-hours
+                    i.icofont-clock-time.icofont-rotate-90
+                    h4 Open Hours:
+                    p Monday-Saturday:
+                      br
+                      | 11:00 AM - 23:00 PM
+                  .email
+                    i.icofont-envelope
+                    h4 Email:
+                    p myrest@restaurant.com
+                  .phone
+                    i.icofont-phone
+                    h4 Call:
+                    p +62 895-3215-89123
+              .col-lg-8.mt-5.mt-lg-0
+                form.php-email-form(action='forms/contact.php', method='post', role='form')
+                  .form-row
+                    .col-md-6.form-group
+                      input.form-control#name(type='text', name='name', placeholder='Your Name', data-rule='minlen:4', data-msg='Please enter at least 4 chars')
+                      .validate
+                    .col-md-6.form-group
+                      input.form-control#email(type='email', name='email', placeholder='Your Email', data-rule='email', data-msg='Please enter a valid email')
+                      .validate
+                  .form-group
+                    input.form-control#subject(type='text', name='subject', placeholder='Subject', data-rule='minlen:4', data-msg='Please enter at least 8 chars of subject')
+                    .validate
+                  .form-group
+                    textarea.form-control(name='message', rows='8', data-rule='required', data-msg='Please write something for us', placeholder='Message')
+                    .validate
+                  .text-center
+                    if (auth.yesOrno)
+                      button(type='submit') Send Message
+                    else
+                      a(href='/login').redirLogin Send Message
+                      
+                  
+      footer#footer
+        .container
+          .copyright
+            | &copy; Copyright 
+            strong
+              span MYREST
+            | . All Rights Reserved
+          .credits
+            | Designed by 
+            a RIFQI AL WAFA
+            
+      #preloader
+      a.back-to-top(href='#')
+        i.bx.bx-up-arrow-alt
+      
+      script(src='./vendor/jquery/jquery.min.js')
+      script(src='./vendor/bootstrap/js/bootstrap.bundle.min.js')
+      script(src='./vendor/jquery.easing/jquery.easing.min.js')
+      script(src='./vendor/php-email-form/validate.js')
+      script(src='./vendor/owl.carousel/owl.carousel.min.js')
+      script(src='./vendor/isotope-layout/isotope.pkgd.min.js')
+      script(src='./vendor/venobox/venobox.min.js')
+      script(src='./vendor/aos/aos.js')
+      script(src='./js/main.js')

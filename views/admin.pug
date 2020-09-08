@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        link(href='./img/logo.png', rel='icon')
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Admin Page
+        link(href='./style/bootstrap.min.css', rel='stylesheet')
+        link(href='./js/dataTables.bootstrap4.min.css', rel='stylesheet')
+    body
+      nav.navbar.navbar-expand-md.navbar-dark.bg-dark.sticky-top
+        a.navbar-brand(href='/') MY - 
+          b REST 
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navmakeme', aria-controls='basicExampleNav', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse.justify-content-center#navmakeme
+          .navbar-nav
+            a.nav-item.nav-link.active(href='/admin') Home
+            a.nav-item.nav-link(href='/profile') Profile
+            a.nav-item.nav-link(href='/products') Products
+        a(href="/logout").btn.btn-dark.float-right Logout
+        
+      div.container.p-5
+        h2 Selamat Datang , #{name}
+        h5 Data Users
+        table.table.table-striped.table-dark.mt-3.mb-3#datatable
+          thead
+            tr
+              th(scope="col") #
+              th(scope="col") Name
+              th(scope="col") Email
+              th(scope="col", width="200") 
+                button.btn.btn-outline-primary.btn-rounded.btn-sm(type='button', data-toggle='modal', data-target=`#adddata`) Add User
+          tbody
+            for user in userss
+              tr
+                th(scope="row")= user.no
+                th(scope="row")= user.name
+                th(scope="row")= user.email
+                th(scope="row") 
+                  button.btn.btn-outline-warning.btn-rounded.mr-1(type='button', data-toggle='modal', data-target=`#modaledit-${user.id_user}`) Edit
+                  button.btn.btn-outline-danger.btn-rounded(type='button', data-toggle='modal', data-target=`#modaldelete-${user.id_user}`) Delete
+            
+          .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' id=`adddata`)
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5.modal-title#exampleModalLabel Add User
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      span(aria-hidden='true') ×
+                  .modal-body
+                    form(action="/reg", method="post", id=`addUser` autocomplete="off")
+                      .card-body
+                        .form-group
+                          label(for=`inputName`) Name
+                          input(type="text", name="name" placeholder="Name" required autofocus id=`#inputName`).form-control
+                        .form-group
+                          label(for=`inputEmail`) Email address
+                          input(type="email", name="email" placeholder="Email address" required id=`#inputEmail`).form-control
+                        .form-group
+                          label(for="inputPassword") Create password
+                          input(type="password", name="password" placeholder="Create password" required id=`#inputPassword`).form-control
+                          
+                  .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    input.btn.btn-dark(type="submit" form=`addUser` value="Update")
+          for user in userss
+            form(action="/deleteUser", method="post", id=`formdelete-${user.id_user}`)
+              .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' id=`modaldelete-${user.id_user}`)
+                .modal-dialog(role='document')
+                  .modal-content
+                    .modal-header
+                      h5.modal-title#exampleModalLabel Delete User
+                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    .modal-body
+                        label Name : 
+                          label= user.name
+                        br
+                        label Email : 
+                          label= user.email
+                        input(type="hidden", name="id_user" value=`${user.id_user}`)
+                    .modal-footer
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      input.btn.btn-dark(type='submit' form=`formdelete-${user.id_user}` value="Delete")
+            form(action="/updateUser", method="post", id=`formedit-${user.id_user}` autocomplete="off")
+              .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' id=`modaledit-${user.id_user}`)
+                .modal-dialog(role='document')
+                  .modal-content
+                    .modal-header
+                      h5.modal-title Edit User
+                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    .modal-body
+                      .card-body
+                        .form-group
+                          label(for=`inputName${user.name}`) Name
+                          input(type="text", name="name" value=`${user.name}` required id=`#inputName${user.id_user}`).form-control
+                        .form-group
+                          label(for=`inputEmail${user.email}`) Email
+                          input(type="email", name="email" value=`${user.email}` required readonly id=`#inputEmail${user.id_user}`).form-control
+                          input(type="hidden", name="id_user" value=`${user.id_user}` )
+                    .modal-footer
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      input.btn.btn-dark(type="submit" form=`formedit-${user.id_user}` value="Update")
+                    
+      script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js', integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN', crossorigin='anonymous')
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')
+      script(src='js/jquery.min.js')
+      script(src='js/jquery.dataTables.min.js')
+      script(src='js/dataTables.bootstrap4.min.js')
+      script.
+        $(document).ready(function(){
+            $('#datatable').DataTable();
+          })
